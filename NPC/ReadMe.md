@@ -7,70 +7,57 @@ A flexible and extensible system for creating, animating, and interacting with n
 ## Features
 
 - **Easy NPC Creation:** Instantiate NPCs with customizable properties.
-- **Animation & Movement:** Built-in support for movement, sprite animation, and smooth transitions.
-- **Behavior & AI:** Assign targets, move NPCs, and trigger actions or dialogue.
-- **Event Handling:** React to game events, player proximity, or custom triggers.
-- **State Management:** Switch between states (aggressive, neutral, friendly, etc.).
-- **Dialog System (optional):** Built-in methods for dialogue and interaction.
+- **Sprite Animation:** Idle and walking animations for multiple directions.
+- **Pathfinding & Movement:** Built-in grid-based A* pathfinding and smooth movement.
+- **Collision Handling:** Works with external world and map colliders.
+- **Interaction Zones:** NPCs can detect and interact with nearby players.
+- **Debug Visualization:** Optional path and collision area visualization.
 
 ---
 
 ## Example Usage
 
 ```lua
-local NPC = require("path.to.npc.module") -- Adjust the path as needed
+local NPC = require("src.modules.npc") -- Adjust the path as needed
 
--- Load resources (in actual implementation, these would be preloaded)
-local function load_sprite()
-    return love.graphics.newImage("assets/npc_guard.png")
+local guard = NPC.new("guard_sprite", 200, 150, map_colliders)
+
+function love.update(dt)
+    guard:update(dt)
 end
 
-local function load_sound()
-    return love.audio.newSource("assets/npc_greet.wav", "static")
+function love.draw()
+    guard:draw()
 end
 
--- Example interaction function
-local function greetPlayer()
-    print("Guard says: Welcome to the city!")
+-- Move the guard to a position
+guard:move_to_position(400, 300)
+
+-- Check for player near NPC in your game logic:
+if player.nearNpc == guard then
+    -- Show interaction prompt, dialogue, etc.
 end
-
--- Create an NPC (e.g., a Guard)
-guard = NPC.new({
-    name = "Guard",
-    x = 200,
-    y = 150,
-    sprite = load_sprite(),
-    health = 150,
-    speed = 60,
-    state = "neutral",
-    visible = true,
-    onInteract = greetPlayer,
-    greetSound = load_sound(),
-    dialogue = {
-        "Halt! Who goes there?",
-        "Stay out of trouble."
-    }
-})
-
-return guard
 ```
 
 ---
 
 ## Customization
 
-- **Sprite:** Replace `"assets/npc_guard.png"` with your own character image.
-- **Sounds:** Use any `.wav` file for greetings, alerts, or actions.
-- **States:** Set initial or dynamic states (e.g. `"aggressive"`, `"friendly"`, `"neutral"`).
-- **Behavior:** Assign custom functions for interaction, movement, AI, or dialogue.
-- **Properties:** Configure health, speed, position, and more.
+- **Sprite:** Place your character sprite (sheet) in `src/sprites/NPCs/` and pass the name (without extension).
+- **Animations:** Supports idle and walking in six directions (down, up, left_down, right_down, left_up, right_up).
+- **Speed & Size:** Modify `.speed` and `.size` parameters for each NPC.
+- **Interaction:** Use `.InteractZone` to set the proximity required for player-NPC interaction.
+- **Pathfinding:** NPCs can move to any valid position using grid-based pathfinding.
+- **Collision:** NPCs avoid map obstacles and walls automatically.
 
 ---
 
 ## Requirements
 
 - [Love2D](https://love2d.org/) 11.0 or newer
-- Your own NPC module at `path.to.npc.module`
+- Your own physics world and map colliders (compatible with Simple Tiled Implementation, bump, or similar)
+- The [anim8](https://github.com/kikito/anim8) animation library
+- NPC module file (see example above)
 
 ---
 
