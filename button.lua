@@ -7,7 +7,7 @@ function Button.new(params)
     self.w = params.w or 100
     self.h = params.h or 50
 
-    -- Display mode: "sprite", "text", "rect", "quad"
+    -- Режим отображения: "sprite", "text", "rect", "quad"
     self.mode = params.mode or "rect"
 
     self.text = params.text or "Button"
@@ -18,16 +18,16 @@ function Button.new(params)
     self.sprite = params.sprite or nil
     self.quad = params.quad or nil
 
-    -- background color
+    -- Цвет фона
     self.color = params.color or {0.2, 0.2, 0.2, 1}
     self.background = params.background
 
-    -- effect on hover
+    -- Эффект при наведении
     self.hoverMode = params.hoverMode or "expand_smooth"
     self.hv_w = params.hv_w or (self.w * 1.2)
     self.hv_h = params.hv_h or (self.h * 1.2)
 
-    -- Current dimensions for smooth transition
+    -- Текущие размеры для плавного перехода
     self.cur_w = self.w
     self.cur_h = self.h
 
@@ -49,17 +49,20 @@ function Button:isHovered(mx, my)
     return mx >= self.x - self.cur_w/2 and mx <= self.x + self.cur_w/2
        and my >= self.y - self.cur_h/2 and my <= self.y + self.cur_h/2
 end
-
 function Button:update(dt, mx, my)
     if self.Enabled and self.Enabled == false then return end
 
+    local wasHovered = self.hovered
     self.hovered = self:isHovered(mx, my)
-
-    if self.hovered and self.selected == false then
+    
+    local justStartedHovering = self.hovered and not wasHovered
+    
+    if justStartedHovering then
+        if self.hover_sound_effect then 
+            self:playHoverSound()
+        end
         self.selected = true
-
-        if self.hover_sound_effect then love.audio.play(self.hover_sound_effect) end
-    else
+    elseif not self.hovered then
         self.selected = false
     end
 
@@ -81,17 +84,30 @@ function Button:update(dt, mx, my)
         local speed = self.expand_smooth_speed
         self.textScale = self.textScale + (targetScale - self.textScale) * speed * dt
     elseif self.hoverMode == "expand_smooth_both" then
-        -- button
+        -- кнопка
         local target_w = self.hovered and self.hv_w or self.w
         local target_h = self.hovered and self.hv_h or self.h
         local speed = self.expand_smooth_speed
         self.cur_w = self.cur_w + (target_w - self.cur_w) * speed * dt
         self.cur_h = self.cur_h + (target_h - self.cur_h) * speed * dt
 
-        -- text
+        -- текст
         local targetScale = self.hovered and self.hv_textScale or 1
         self.textScale = self.textScale + (targetScale - self.textScale) * speed * dt
     end
+end
+
+function Button:playHoverSound()
+    -- Останавливаем все предыдущие звуки наведения этой кнопки
+    if self.current_hover_sound then
+        self.current_hover_sound:stop()
+    end
+    
+    -- Создаем новый источник звука из данных
+    local sound = self.hover_sound_effect
+    sound:setVolume(0.7) -- Опционально: регулировка громкости
+    love.audio.play(sound)
+    self.current_hover_sound = sound
 end
 
 function Button:draw(debugMode)
