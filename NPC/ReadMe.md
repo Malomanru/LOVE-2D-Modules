@@ -1,95 +1,79 @@
-# NPC Модуль для LOVE 2D
+# NPC Module Implementation for Love2D
 
-Этот модуль позволяет создавать и управлять неигровыми персонажами (NPC) в вашем проекте на LOVE 2D.
-
-## Начало работы
-
-1. **Импорт модуля**
-   Подключите модуль NPC в свой проект:
-   ```lua
-   local NPC = require("NPC.NPC")
-   ```
-
-2. **Создание NPC**
-   Для создания NPC используйте конструктор модуля. Пример:
-   ```lua
-   local enemy = NPC.new({
-     name = "Враг",
-     x = 100,
-     y = 200,
-     sprite = "enemy.png",
-     health = 100
-   })
-   ```
-   Обычно параметры включают имя, координаты, спрайт и другие характеристики.
-
-3. **Добавление NPC на сцену**
-   NPC можно добавить в список объектов для отрисовки и обновления:
-   ```lua
-   npcs = {}
-   table.insert(npcs, enemy)
-   ```
-
-4. **Обработка логики NPC**
-   В основном цикле `love.update(dt)` обновляйте NPC:
-   ```lua
-   for _, npc in ipairs(npcs) do
-     npc:update(dt)
-   end
-   ```
-
-   Для отрисовки используйте:
-   ```lua
-   for _, npc in ipairs(npcs) do
-     npc:draw()
-   end
-   ```
-
-5. **Настройка поведения**
-   У NPC могут быть методы для задания поведения, например:
-   ```lua
-   enemy:setTarget(player)
-   enemy:moveTo(x, y)
-   enemy:speak("Стой, кто идет!")
-   ```
-
-## Пример полного кода
-
-```lua
-local NPC = require("NPC.NPC")
-local player = {x = 50, y = 50}
-
-local guard = NPC.new({
-  name = "Стражник",
-  x = 200,
-  y = 150,
-  sprite = "guard.png",
-  health = 150
-})
-
-function love.update(dt)
-  guard:update(dt)
-  -- Дополнительная логика
-end
-
-function love.draw()
-  guard:draw()
-end
-```
-
-## Дополнительные возможности
-
-- Управление диалогами
-- Реакция на события
-- Смена состояний NPC (агрессивный, нейтральный, дружелюбный)
-- Сохранение и загрузка NPC
-
-## Советы
-
-- Изучите функции и методы, предоставленные модулем NPC, чтобы реализовать уникальное поведение.
-- Для сложных NPC используйте наследование или расширяйте базовый класс NPC.
+A flexible and extensible system for creating, animating, and interacting with non-player characters (NPCs) in [Love2D](https://love2d.org/) games.
 
 ---
 
-> Для подробностей смотрите код или дополнительные файлы документации в папке NPC.
+## Features
 
+- **Easy NPC Creation:** Instantiate NPCs with customizable properties.
+- **Animation & Movement:** Built-in support for movement, sprite animation, and smooth transitions.
+- **Behavior & AI:** Assign targets, move NPCs, and trigger actions or dialogue.
+- **Event Handling:** React to game events, player proximity, or custom triggers.
+- **State Management:** Switch between states (aggressive, neutral, friendly, etc.).
+- **Dialog System (optional):** Built-in methods for dialogue and interaction.
+
+---
+
+## Example Usage
+
+```lua
+local NPC = require("path.to.npc.module") -- Adjust the path as needed
+
+-- Load resources (in actual implementation, these would be preloaded)
+local function load_sprite()
+    return love.graphics.newImage("assets/npc_guard.png")
+end
+
+local function load_sound()
+    return love.audio.newSource("assets/npc_greet.wav", "static")
+end
+
+-- Example interaction function
+local function greetPlayer()
+    print("Guard says: Welcome to the city!")
+end
+
+-- Create an NPC (e.g., a Guard)
+guard = NPC.new({
+    name = "Guard",
+    x = 200,
+    y = 150,
+    sprite = load_sprite(),
+    health = 150,
+    speed = 60,
+    state = "neutral",
+    visible = true,
+    onInteract = greetPlayer,
+    greetSound = load_sound(),
+    dialogue = {
+        "Halt! Who goes there?",
+        "Stay out of trouble."
+    }
+})
+
+return guard
+```
+
+---
+
+## Customization
+
+- **Sprite:** Replace `"assets/npc_guard.png"` with your own character image.
+- **Sounds:** Use any `.wav` file for greetings, alerts, or actions.
+- **States:** Set initial or dynamic states (e.g. `"aggressive"`, `"friendly"`, `"neutral"`).
+- **Behavior:** Assign custom functions for interaction, movement, AI, or dialogue.
+- **Properties:** Configure health, speed, position, and more.
+
+---
+
+## Requirements
+
+- [Love2D](https://love2d.org/) 11.0 or newer
+- Your own NPC module at `path.to.npc.module`
+
+---
+
+## License
+
+MIT © [Malomanru](https://github.com/Malomanru)
