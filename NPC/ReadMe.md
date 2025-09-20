@@ -55,7 +55,7 @@ end
 ## Requirements
 
 - [Love2D](https://love2d.org/) 11.0 or newer
-- Your own physics world and map colliders (compatible with Simple Tiled Implementation, bump, or similar)
+- Your own physics world and map colliders (compatible with Simple Tiled Implementation, windfield)
 - The [anim8](https://github.com/kikito/anim8) animation library
 - NPC module file (see example above)
 
