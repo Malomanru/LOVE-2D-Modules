@@ -1,10 +1,22 @@
---[[
-    Play Button Implementation
-    A beautifully animated button with hover effects and sound feedback
-    Designed for Love2D game framework
-]]
+# Play Button Implementation for Love2D
 
-local Button = require("path.to.button.module") -- Adjust path as needed
+A beautifully animated button with hover effects and sound feedback, designed for the [Love2D](https://love2d.org/) game framework.
+
+---
+
+## Features
+
+- **Animated Hover Effects:** Smooth expansion and color transitions on hover.
+- **Sound Feedback:** Plays sound effects when hovered or clicked.
+- **Customizable Appearance:** Easily set sprite, text, colors, and fonts.
+- **Easy Integration:** Simple API for creating and managing button behavior.
+
+---
+
+## Example Usage
+
+```lua
+local Button = require("path.to.button.module") -- Adjust the path as needed
 
 -- Load resources (in actual implementation, these would be preloaded)
 local function load_sprite()
@@ -44,3 +56,25 @@ play = Button.new({
 })
 
 return play
+```
+
+---
+
+## Customization
+
+- **Sprite:** Replace `"assets/button_sprite.png"` with your own image.
+- **Sounds:** Use any `.wav` file for `clickSoundEffect` and `hoverSoundEffect`.
+- **Colors & Fonts:** Adjust `color`, `hoverColor`, and `font` for your game's style.
+
+---
+
+## Requirements
+
+- [Love2D](https://love2d.org/) 11.0 or newer
+- Your own button module at `path.to.button.module`
+
+---
+
+## License
+
+MIT © [Malomanru](https://github.com/Malomanru)
