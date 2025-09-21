@@ -17,8 +17,8 @@ This module lets you easily create and manage checkbox components in your game o
 
    Place `checkbox.lua` and your desired sprites in your project, e.g.:
    ```
-   src/sprites/ui/checkbox/check_mark.png
-   src/sprites/ui/checkbox/checkbox_frame.png
+   src/sprites/ui/checkbox/check_mark.png - example
+   src/sprites/ui/checkbox/checkbox_frame.png - example
    ```
 
 2. **Require the module**
@@ -104,3 +104,4 @@ Feel free to use and modify!
 ---
 
 **Author:** [Malomanru](https://github.com/Malomanru)
+
